@@ -1,0 +1,29 @@
+file_path = './sequence.gb'
+
+def read_gb(file_path):
+    header = '<'
+    sequence = ''
+    with open(file_path, 'rt') as gb:
+        for line in gb:
+            line = line.strip('\n').strip()
+            if line.startswith('LOCUS'):
+                header = (">" + line.lstrip('LOCUS')).split()
+                header = " ".join(header)
+                
+            elif line.startswith('ORIGIN'):
+                for line in gb:
+                     sequence = sequence+line[10:].upper()
+                     sequence=sequence.replace(' ','')           
+    return header,sequence
+
+def write_fasta(file_path, header, sequence):
+    with open(file_path, 'wt') as fasta:
+        fasta.write(header)
+        fasta.write('\n')
+        fasta.write(sequence)
+
+
+if __name__ == '__main__':
+
+    header, sequence = read_gb(file_path)
+    write_fasta('./gb2fasta.fasta', header, sequence) 
