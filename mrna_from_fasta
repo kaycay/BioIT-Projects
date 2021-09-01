@@ -1,0 +1,54 @@
+file_path = './sequence.fasta'
+
+def read_fasta(file_path):
+    sequence =''
+    with open(file_path, 'rt') as file:
+        for line in file:
+            line = line.strip('\n').strip().upper()
+            if line.startswith('>'):
+                continue
+            else:
+                sequence += line
+    return sequence
+
+def nucleotides_counter(sequence):
+    count = {}
+    for i in sequence:
+        if i in count:
+            count[i] += 1
+        else:
+            count[i] = 1
+    return count
+
+def complementary_strand(sequence, reverse=False):
+    complementary = ''
+    for nucleotide in sequence:
+        if nucleotide == 'A':
+            complementary += 'T'
+        elif nucleotide == 'C':
+            complementary += 'G'
+        elif nucleotide == 'G':
+             complementary += 'C'
+        elif nucleotide == 'T':
+             complementary += 'A'
+        else:
+            continue
+    if reverse:
+        complementary = complementary[::-1]                    
+    return  complementary 
+
+def mrna(sequence):
+    rna = sequence.replace('T','U')
+    return rna
+
+
+
+
+if __name__ == '__main__':
+    sequence = read_fasta(file_path)
+    count=nucleotides_counter(sequence)
+    print(count, '\n')
+    complementary=complementary_strand(sequence,reverse=False)
+    print(complementary,'\n')
+    mRNA=mrna(sequence)
+    print(mRNA)
